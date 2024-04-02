@@ -1,0 +1,79 @@
+{
+	"name": "kopilot-web",
+	"private": true,
+	"version": "0.0.0",
+	"scripts": {
+		"dev": "vite",
+		"clean cache": "yarn cache clean",
+		"format": "yarn run pretty && yarn run lint",
+		"build": "tsc && vite build",
+		"preview": "vite preview",
+		"pretty": "prettier --write \"src/**/*.{ts,tsx}\"",
+		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+		"update: tamagui": "yarn upgrade tamagui @tamagui/animations-css @tamagui/lucide-icons @tamagui/shorthands @tamagui/vite-plugin"
+	},
+	"dependencies": {
+		"@mediapipe/face_mesh": "^0.4.1633559619",
+		"@tamagui/animations-css": "^1.91.4",
+		"@tamagui/lucide-icons": "^1.91.4",
+		"@tamagui/shorthands": "^1.91.4",
+		"@techstark/opencv-js": "^4.9.0-release.3",
+		"@tensorflow-models/face-detection": "^1.0.2",
+		"@tensorflow-models/face-landmarks-detection": "^1.0.5",
+		"@tensorflow-models/facemesh": "^0.0.5",
+		"@tensorflow/tfjs": "^4.17.0",
+		"@tensorflow/tfjs-backend-webgl": "^4.17.0",
+		"million": "^3.0.6",
+		"prettier": "^3.2.5",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-webcam": "^7.2.0",
+		"tamagui": "^1.91.4"
+	},
+	"devDependencies": {
+		"@nderscore/tamagui-typescript-plugin": "^0.6.0",
+		"@tamagui/vite-plugin": "^1.91.4",
+		"@trivago/prettier-plugin-sort-imports": "^4.3.0",
+		"@types/react": "^18.2.66",
+		"@types/react-dom": "^18.2.22",
+		"@typescript-eslint/eslint-plugin": "^7.2.0",
+		"@typescript-eslint/parser": "^7.2.0",
+		"@vitejs/plugin-basic-ssl": "^1.1.0",
+		"@vitejs/plugin-react": "^4.2.1",
+		"babel-prettier-parser": "^0.10.8",
+		"eslint": "^8.57.0",
+		"eslint-plugin-react-hooks": "^4.6.0",
+		"eslint-plugin-react-refresh": "^0.4.6",
+		"typescript": "^5.4.2",
+		"vite": "^5.1.6"
+	},
+	"prettier": {
+		"useTabs": true,
+		"tabWidth": 4,
+		"printWidth": 115,
+		"endOfLine": "auto",
+		"bracketSameLine": true,
+		"semi": true,
+		"singleQuote": false,
+		"plugins": [
+			"@trivago/prettier-plugin-sort-imports"
+		],
+		"importOrder": [
+			"^react",
+			"<THIRD_PARTY_MODULES>",
+			"./*.type",
+			"./*.config",
+			"@tamagui/lucide-icons",
+			"^tamagui",
+			"^@tamagui/[^/]*",
+			"./*.styled",
+			"./*.helper",
+			"@uidotdev/usehooks",
+			"./*.use[^/]*",
+			"./*Provider",
+			"./*Context",
+			"^[./]"
+		],
+		"importOrderSortSpecifiers": true
+	}
+}
