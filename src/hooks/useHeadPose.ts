@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Keypoint } from "@tensorflow-models/face-landmarks-detection";
+import { useKeypoints } from "./useKeypoints";
+import useMask from "./useMask";
 import calculateHeadPose from "../utils/calculateHeadPose";
 
 export interface HeadPose {
@@ -9,7 +10,11 @@ export interface HeadPose {
 	projectedPoints: number[];
 }
 
-export default function useHeadPose(keypoints: Keypoint[], canvas: HTMLCanvasElement | null) {
+export default function useHeadPose() {
+	const canvasRef = useMask();
+
+	const { keypoints } = useKeypoints();
+
 	const initialHeadPose = { roll: "0", tilt: "0", yaw: "0", projectedPoints: [] };
 	const [headPose, setHeadPose] = useState<HeadPose>(initialHeadPose);
 
@@ -17,7 +22,9 @@ export default function useHeadPose(keypoints: Keypoint[], canvas: HTMLCanvasEle
 
 	useEffect(() => {
 		const calculatedHeadPose =
-			numberOfKeys > 0 && canvas !== null ? calculateHeadPose(keypoints, canvas) : initialHeadPose;
+			numberOfKeys > 0 && canvasRef.current !== null
+				? calculateHeadPose(keypoints, canvasRef.current)
+				: initialHeadPose;
 
 		setHeadPose(calculatedHeadPose);
 		// eslint-disable-next-line react-hooks/exhaustive-deps

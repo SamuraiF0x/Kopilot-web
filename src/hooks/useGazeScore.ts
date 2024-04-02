@@ -1,4 +1,4 @@
-import { Keypoint } from "@tensorflow-models/face-landmarks-detection";
+import { useKeypoints } from "./useKeypoints";
 import calculateDistance from "../utils/calculateDistance";
 import calculateEyeCenter from "../utils/calculateEyeCenter";
 import { keypointIndex } from "../utils/constants";
@@ -6,14 +6,15 @@ import { keypointIndex } from "../utils/constants";
 /**
  * Estimate the gaze score of the driver.
  *
- * @param keypoints
  * @returns *string* [0, 1]
  *
  * **Note:** lower is better = looking straight
  * - lowest score ~ 4
  * - highest score ~ 50 (at certain angles)
  */
-export default function useGazeScore(keypoints: Keypoint[]) {
+export default function useGazeScore() {
+	const { keypoints } = useKeypoints();
+
 	// For left eye
 	const leftEyeKeypoints = [];
 	for (let i = 0; i < keypointIndex.leftEyeContour.length; i++) {

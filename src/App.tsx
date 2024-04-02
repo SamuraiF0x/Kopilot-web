@@ -1,17 +1,13 @@
-import { useRef, useState } from "react";
-// import "@tensorflow/tfjs";
-// Register WebGL backend.
-// import "@tensorflow/tfjs-backend-webgl";
-// import "@tensorflow-models/facemesh";
-// import "@mediapipe/face_mesh";
-import Webcam from "react-webcam";
-import { Keypoint } from "@tensorflow-models/face-landmarks-detection";
-import config, { tokens } from "../tamagui.config.ts";
+import { useState } from "react";
+import config from "../tamagui.config.ts";
 import { Paragraph, Stack, TamaguiProvider, Theme, YStack } from "tamagui";
-import useAxis from "./hooks/useAxis.ts";
-import DrivingInfo from "./components/DrivingInfo.tsx";
-import { inputResolution, videoConstraints } from "./utils/constants.ts";
-import runDetector from "./utils/runDetector.ts";
+import DrivingInfoProvider from "./context/DrivingInfoProvider.tsx";
+import KeypointProvider from "./context/KeypointProvider.tsx";
+import MaskProvider from "./context/MaskProvider.tsx";
+import Camera from "./components/Camera.tsx";
+import DriverState from "./components/DriverState.tsx";
+import DrivingStats from "./components/DrivingStats.tsx";
+import Mask from "./components/Mask.tsx";
 
 // TODO Settings:
 // TODO - contour styles: line, spline, both...
@@ -26,78 +22,40 @@ import runDetector from "./utils/runDetector.ts";
 // TODO - store && display scores per driving session
 
 function App() {
-	const canvasRef = useRef<HTMLCanvasElement | null>(null);
-	const videoRef = useRef<(EventTarget & HTMLVideoElement) | null>(null);
 	const [loaded, setLoaded] = useState(false);
-	// const [tension, setTension] = useState(1);
-	const [keypoints, setKeypoints] = useState<Keypoint[]>([]);
-
-	const handleVideoLoad = (videoNode: React.SyntheticEvent<HTMLVideoElement, Event>) => {
-		const video = videoNode.currentTarget;
-		if (video.readyState !== 4) return;
-		videoRef.current = video;
-		if (canvasRef.current !== null) {
-			runDetector(videoRef.current, canvasRef.current, 1, setKeypoints);
-		}
-		setLoaded(true);
-	};
-
-	const handleHeadPoseChange = useAxis(canvasRef.current, keypoints);
 
 	return (
 		<TamaguiProvider config={config}>
 			<Theme name="dark">
-				<YStack fullscreen jc="flex-end" bg="$backgroundTransparent">
-					<YStack
-						fullscreen
-						// mt="$8"
-						mb="$10.5"
-						bg="$background"
-						br="$8"
-						bw="$1"
-						boc="$red"
-						style={{ overflow: "hidden" }}>
-						<Stack ai="center" jc="center" w="100%" h="100%">
-							{loaded ? <></> : <Paragraph>Loading...</Paragraph>}
+				<MaskProvider>
+					<KeypointProvider>
+						<DrivingInfoProvider>
+							<YStack fullscreen jc="space-between" bg="$backgroundTransparent">
+								<DriverState />
 
-							<Webcam
-								width={inputResolution.width}
-								height={inputResolution.height}
-								style={{
-									objectFit: "cover",
-									visibility: "hidden",
-									width: "100%",
-									height: "100%",
-									borderTopLeftRadius: tokens.radius[8].val,
-									borderTopRightRadius: tokens.radius[8].val,
-									transform: "rotateY(180deg)",
-								}}
-								videoConstraints={videoConstraints}
-								onLoadedData={handleVideoLoad}
-							/>
-						</Stack>
+								<YStack
+									fullscreen
+									mt="$8"
+									mb="$8"
+									bg="$background"
+									br="$8"
+									bw="$1"
+									boc="$red"
+									style={{ overflow: "hidden" }}>
+									<Stack ai="center" jc="center" w="100%" h="100%">
+										{loaded ? <></> : <Paragraph>Loading...</Paragraph>}
 
-						<canvas
-							ref={canvasRef}
-							width={inputResolution.width - 850}
-							height={inputResolution.height + 850}
-							style={{
-								position: "absolute",
-								zIndex: 1000,
-								width: "100%",
-								height: "100%",
-								objectFit: "cover",
-								transform: "scale(2.5) rotateY(180deg)",
-							}}
-						/>
-					</YStack>
+										<Camera setLoaded={setLoaded} />
+									</Stack>
 
-					<DrivingInfo
-						keypoints={keypoints}
-						onHeadPoseChange={handleHeadPoseChange}
-						canvas={canvasRef.current}
-					/>
-				</YStack>
+									<Mask />
+								</YStack>
+
+								<DrivingStats />
+							</YStack>
+						</DrivingInfoProvider>
+					</KeypointProvider>
+				</MaskProvider>
 			</Theme>
 		</TamaguiProvider>
 	);

@@ -1,17 +1,18 @@
-import { Keypoint } from "@tensorflow-models/face-landmarks-detection";
+import { useKeypoints } from "./useKeypoints";
 import calculateDistance from "../utils/calculateDistance";
 import { keypointIndex } from "../utils/constants";
 
 /**
  * Estimate the eye aspect ratio (EAR) of the driver.
  *
- * @param keypoints
  * @returns *string* - [0-1]
  *
  * **Note:** higher ratio = eye opened more widely
  * - lowest ratio ~ 0.2
  */
-export default function useEAR(keypoints: Keypoint[]) {
+export default function useEAR() {
+	const { keypoints } = useKeypoints();
+
 	let leftEyeRatio = 0;
 	let rightEyeRatio = 0;
 
