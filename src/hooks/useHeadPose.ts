@@ -4,9 +4,9 @@ import useMask from "./useMask";
 import calculateHeadPose from "../utils/calculateHeadPose";
 
 export interface HeadPose {
-	roll: string;
-	tilt: string;
-	yaw: string;
+	roll: number;
+	tilt: number;
+	yaw: number;
 	projectedPoints: number[];
 }
 
@@ -15,7 +15,7 @@ export default function useHeadPose() {
 
 	const { keypoints } = useKeypoints();
 
-	const initialHeadPose = { roll: "0", tilt: "0", yaw: "0", projectedPoints: [] };
+	const initialHeadPose = { roll: 0, tilt: 0, yaw: 0, projectedPoints: [] };
 	const [headPose, setHeadPose] = useState<HeadPose>(initialHeadPose);
 
 	const numberOfKeys = Object.keys(keypoints).length;

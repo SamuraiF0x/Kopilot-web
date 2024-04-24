@@ -1,27 +1,26 @@
 import { AnimatePresence, Paragraph, YStack } from "tamagui";
 import useDriverInfo from "../hooks/useDriverInfo";
-import { useKeypoints } from "../hooks/useKeypoints";
 import { useSettings } from "../hooks/useSettings";
-import { keypointIndex } from "../utils/constants";
+
+const getColorAndMessage = (isFocused: boolean, isDistracted: boolean, messages: string[]) => {
+	let color = "$green";
+	let message = messages[2];
+
+	if (!isFocused && isDistracted) {
+		color = "$red";
+		message = messages[0];
+	} else if (isDistracted) {
+		color = "$yellow";
+		message = messages[1];
+	}
+
+	return { color, message };
+};
 
 export default function DriverStates() {
-	// TODO add this to headPose state
-	// ? const isSleepy = isHeadTiltFocused || isHeadTiltDistracted;
+	const { driverSubStates } = useDriverInfo();
 
-	const {
-		isAwake,
-		isTired,
-		isFocused,
-		isDistracted,
-		isHeadRollFocused,
-		isHeadTiltFocused,
-		isHeadYawFocused,
-		isHeadFocused,
-		isHeadRollDistracted,
-		isHeadTiltDistracted,
-		isHeadYawDistracted,
-		isHeadDistracted,
-	} = useDriverInfo();
+	const { showStates } = useSettings();
 
 	// state table to follow head position:
 	// const { keypoints } = useKeypoints();
@@ -29,8 +28,6 @@ export default function DriverStates() {
 	// 	x: keypoints[keypointIndex.leftIrisCenter].x,
 	// 	y: keypoints[keypointIndex.leftIrisCenter].y,
 	// };
-
-	const { showStates } = useSettings();
 
 	return (
 		<AnimatePresence>
@@ -53,43 +50,20 @@ export default function DriverStates() {
 					animation="elastic"
 					enterStyle={{ o: 0, scale: 0 }}
 					exitStyle={{ o: 0, scale: 0 }}>
-					<YStack ai="center" gap="$3">
-						<Paragraph>Eyes opened</Paragraph>
+					{driverSubStates.map((state, index) => {
+						const { color, message } = getColorAndMessage(
+							state.isFocused,
+							state.isDistracted,
+							state.messages,
+						);
 
-						<Paragraph col={!isAwake && isTired ? "$red" : isTired ? "$yellow" : "$green"}>
-							{!isAwake && isTired ? "Asleep" : isTired ? "Take a pause" : "Awake"}
-						</Paragraph>
-					</YStack>
-
-					<YStack ai="center" gap="$3">
-						<Paragraph>Gaze score</Paragraph>
-
-						<Paragraph col={!isFocused && isDistracted ? "$red" : isDistracted ? "$yellow" : "$green"}>
-							{!isFocused && isDistracted
-								? "Eyes on the road"
-								: isDistracted
-									? "Distracted"
-									: "Focused"}
-						</Paragraph>
-					</YStack>
-
-					<YStack ai="center" gap="$3">
-						<Paragraph>Head pose</Paragraph>
-						<Paragraph
-							col={
-								!isHeadFocused && isHeadDistracted
-									? "$red"
-									: isHeadDistracted
-										? "$yellow"
-										: "$green"
-							}>
-							{!isHeadFocused && isHeadDistracted
-								? "Eyes on the road"
-								: isHeadDistracted
-									? "Distracted"
-									: "Focused"}
-						</Paragraph>
-					</YStack>
+						return (
+							<YStack key={index} ai="center" gap="$3">
+								<Paragraph>{state.title}</Paragraph>
+								<Paragraph col={color}>{message}</Paragraph>
+							</YStack>
+						);
+					})}
 				</YStack>
 			)}
 		</AnimatePresence>

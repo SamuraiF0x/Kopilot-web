@@ -49,5 +49,5 @@ export default function useGazeScore() {
 
 	const gazeScore = 1 - (leftGazeScore + rightGazeScore) / 2;
 
-	return gazeScore.toFixed(2);
+	return Number(gazeScore.toFixed(2));
 }

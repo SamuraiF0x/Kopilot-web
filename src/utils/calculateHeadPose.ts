@@ -194,5 +194,10 @@ export default function calculateHeadPose(keypoints: Keypoint[], canvas: HTMLCan
 		projectedPoints = Array.from(imagePointsProjected.data64F);
 	}
 
-	return { roll: roll.toFixed(2), tilt: tilt.toFixed(2), yaw: yaw.toFixed(2), projectedPoints };
+	return {
+		roll: Number(roll.toFixed(2)),
+		tilt: Number(tilt.toFixed(2)),
+		yaw: Number(yaw.toFixed(2)),
+		projectedPoints,
+	};
 }

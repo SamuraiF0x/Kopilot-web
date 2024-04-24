@@ -58,5 +58,5 @@ export default function useEAR() {
 
 	const ear = (leftEyeRatio + rightEyeRatio) / 2;
 
-	return ear.toFixed(2);
+	return Number(ear.toFixed(2));
 }

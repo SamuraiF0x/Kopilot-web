@@ -10,7 +10,7 @@ import { useEffect, useRef, useState } from "react";
  * @returns *boolean* - true if the score is below the threshold for a certain percentage of time
  */
 export default function useScoreOverTime(
-	score: string,
+	score: number,
 	scoreThreshold: number,
 	bothSides = false,
 	durationTreshold: number = 0.2,
@@ -21,10 +21,10 @@ export default function useScoreOverTime(
 	const durationCounter = useRef(0);
 	const timerId = useRef<NodeJS.Timeout | null>(null);
 
-	const scoreRef = useRef(parseFloat(score));
+	const scoreRef = useRef(score);
 
 	useEffect(() => {
-		scoreRef.current = parseFloat(score); // update the ref with the latest value of score
+		scoreRef.current = (score); // update the ref with the latest value of score
 	}, [score]);
 
 	useEffect(() => {

@@ -2,34 +2,20 @@ import { H3, View, XStack } from "tamagui";
 import { useCamera } from "../hooks/useCamera";
 import useDriverInfo from "../hooks/useDriverInfo";
 import { useSettings } from "../hooks/useSettings";
+import getDriverStateColor from "../utils/getDriverStateColor";
 import MenuSheet from "./sheet/MenuSheet";
 
 export default function Header() {
 	const { loaded } = useCamera();
 	const { menuOpen, setMenuOpen } = useSettings();
+	const { driverState } = useDriverInfo();
 
-	const {
-		isAwake,
-		isTired,
-		isFocused,
-		isDistracted,
-		isHeadRollFocused,
-		isHeadTiltFocused,
-		isHeadYawFocused,
-		isHeadFocused,
-		isHeadRollDistracted,
-		isHeadTiltDistracted,
-		isHeadYawDistracted,
-		isHeadDistracted,
-	} = useDriverInfo();
-
-	// TODO - extract msg to constants/enum (loading, focused, isA..)
-	// TODO - add toast for warning msgs
-
-	const driverState =
-		isAwake && !isTired && isFocused && !isDistracted && isHeadFocused && !isHeadDistracted
-			? "Focused"
-			: "Distracted";
+	const getColor = () => {
+		if (!loaded) {
+			return "$primary";
+		}
+		return getDriverStateColor(driverState);
+	};
 
 	return (
 		<XStack ai="center" jc="space-between" m="$4">
@@ -42,10 +28,10 @@ export default function Header() {
 					px="$4"
 					py="$2.5"
 					bw="$1"
-					boc={driverState ? "$success" : "$warning"}
+					boc={getColor()}
 					br="$4"
 					animation="smooth">
-					<H3 col={driverState ? "$success" : "$warning"}>{loaded && driverState} </H3>
+					<H3 col={getColor()}>{loaded ? driverState : "Initialising"}</H3>
 				</View>
 			</XStack>
 

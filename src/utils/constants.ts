@@ -27,3 +27,30 @@ export const keypointIndex = {
 	rightLipOuterCorner: 61,
 	chin: 199,
 };
+
+export enum DriverState {
+	Focused = "Focused",
+	Tired = "Tired",
+	Asleep = "Asleep",
+	LookingAway = "Looking away",
+	Distracted = "Distracted",
+}
+
+export enum EyesOpenedMessages {
+	Asleep = "Asleep",
+	TakeAPause = "Take a pause",
+	Awake = "Awake",
+}
+
+export enum GazeScoreMessages {
+	EyesOnTheRoad = "Eyes on the road!",
+	Distracted = "Distracted",
+	Focused = "Focused",
+}
+
+// Assuming the messages for "Head pose" are the same as "Gaze score"
+export enum HeadPoseMessages {
+	EyesOnTheRoad = "Eyes on the road!",
+	Distracted = "Distracted",
+	Focused = "Focused",
+}

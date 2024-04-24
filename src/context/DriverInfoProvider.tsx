@@ -3,7 +3,8 @@ import useGazeScore from "../hooks/useGazeScore";
 import useHeadPose from "../hooks/useHeadPose";
 import useScoreOverTime from "../hooks/useScoreOverTime";
 import useTresholdCountdown from "../hooks/useTresholdCountdown";
-import { DriverInfoContext } from "./DrivingInfoContext";
+import { DriverInfoContext } from "./DriverInfoContext";
+import { DriverState, EyesOpenedMessages, GazeScoreMessages, HeadPoseMessages } from "../utils/constants";
 
 interface DriverInfoProviderProps {
 	children: React.ReactNode;
@@ -11,12 +12,12 @@ interface DriverInfoProviderProps {
 
 export default function DriverInfoProvider({ children }: DriverInfoProviderProps) {
 	const EAR = useEAR();
-	const isAwake = useTresholdCountdown(EAR, 0.4);
-	const isTired = useScoreOverTime(EAR, 0.45);
+	const isEARFocused = useTresholdCountdown(EAR, 0.4);
+	const isEARDistracted = useScoreOverTime(EAR, 0.45);
 
 	const gazeScore = useGazeScore();
-	const isFocused = useTresholdCountdown(gazeScore, 0.35);
-	const isDistracted = useScoreOverTime(gazeScore, 0.35);
+	const isGazeScoreFocused = useTresholdCountdown(gazeScore, 0.35);
+	const isGazeScoreDistracted = useScoreOverTime(gazeScore, 0.35);
 
 	const headPose = useHeadPose();
 	const isHeadRollFocused = useTresholdCountdown(headPose.roll, 30, true);
@@ -28,15 +29,57 @@ export default function DriverInfoProvider({ children }: DriverInfoProviderProps
 	const isHeadYawDistracted = useScoreOverTime(headPose.yaw, 25, true);
 	const isHeadDistracted = isHeadRollDistracted || isHeadTiltDistracted || isHeadYawDistracted;
 
+	const driverState: DriverState = (() => {
+		if (
+			isEARFocused &&
+			!isEARDistracted &&
+			isGazeScoreFocused &&
+			!isGazeScoreDistracted &&
+			isHeadFocused &&
+			!isHeadDistracted
+		) {
+			return DriverState.Focused;
+		} else if (isEARDistracted || isHeadDistracted) {
+			return DriverState.Tired;
+		} else if (!isEARFocused) {
+			return DriverState.Asleep;
+		} else if (!isGazeScoreFocused || isGazeScoreDistracted) {
+			return DriverState.LookingAway;
+		} else {
+			return DriverState.Distracted;
+		}
+	})();
+
+	const driverSubStates = [
+		{
+			title: "Eyes opened",
+			isFocused: isEARFocused,
+			isDistracted: isEARDistracted,
+			messages: Object.values(EyesOpenedMessages),
+		},
+		{
+			title: "Gaze score",
+			isFocused: isGazeScoreFocused,
+			isDistracted: isGazeScoreDistracted,
+			messages: Object.values(GazeScoreMessages),
+		},
+		{
+			title: "Head pose",
+			isFocused: isHeadFocused,
+			isDistracted: isHeadDistracted,
+			messages: Object.values(HeadPoseMessages),
+		},
+	];
+
 	return (
 		<DriverInfoContext.Provider
 			value={{
 				EAR,
-				isAwake,
-				isTired,
+				isEARFocused,
+				isEARDistracted,
 				gazeScore,
-				isFocused,
-				isDistracted,
+				isGazeScoreFocused,
+				isGazeScoreDistracted,
 				headPose,
 				isHeadRollFocused,
 				isHeadTiltFocused,
@@ -46,6 +89,8 @@ export default function DriverInfoProvider({ children }: DriverInfoProviderProps
 				isHeadTiltDistracted,
 				isHeadYawDistracted,
 				isHeadDistracted,
+				driverState,
+				driverSubStates,
 			}}>
 			{children}
 		</DriverInfoContext.Provider>

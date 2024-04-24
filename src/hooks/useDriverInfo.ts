@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { DriverInfoContext } from "../context/DrivingInfoContext";
+import { DriverInfoContext } from "../context/DriverInfoContext";
 
 export default function useDriverInfo() {
 	const context = useContext(DriverInfoContext);

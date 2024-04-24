@@ -7,12 +7,11 @@ import { useEffect, useRef, useState } from "react";
  * @param treshold - the treshold to compare the score with
  * @returns *boolean* - true if the score is below the treshold
  */
-export default function useTresholdCountdown(score: string, treshold: number, bothSides = false) {
+export default function useTresholdCountdown(score: number, treshold: number, bothSides = false) {
 	const [isTriggered, setTrigger] = useState(false);
 	const timerRef = useRef<number | null>(null);
 
 	useEffect(() => {
-		const numericScore = parseFloat(score);
 
 		const startTimer = () => {
 			timerRef.current = window.setTimeout(() => {
@@ -27,7 +26,7 @@ export default function useTresholdCountdown(score: string, treshold: number, bo
 			}
 		};
 
-		if (bothSides ? numericScore > treshold || numericScore < -treshold : numericScore < treshold) {
+		if (bothSides ? score > treshold || score < -treshold : score < treshold) {
 			if (timerRef.current === null) startTimer();
 		} else {
 			setTrigger(true);
