@@ -12,7 +12,6 @@ export default function useTresholdCountdown(score: number, treshold: number, bo
 	const timerRef = useRef<number | null>(null);
 
 	useEffect(() => {
-
 		const startTimer = () => {
 			timerRef.current = window.setTimeout(() => {
 				setTrigger(false);
