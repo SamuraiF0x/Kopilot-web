@@ -1,11 +1,12 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
 import basicSsl from "@vitejs/plugin-basic-ssl";
+import react from "@vitejs/plugin-react";
 import million from "million/compiler";
+import { defineConfig } from "vite";
 import { tamaguiPlugin } from "@tamagui/vite-plugin";
 
 export default defineConfig({
 	server: {
+		open: true,
 		host: true,
 	},
 	plugins: [

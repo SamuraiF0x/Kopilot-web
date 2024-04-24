@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 // Define the shape of your context
-interface DrivingInfoContextProps {
+interface DriverInfoContextProps {
 	EAR: string;
 	isAwake: boolean;
 	isTired: boolean;
@@ -19,4 +19,4 @@ interface DrivingInfoContextProps {
 	isHeadDistracted: boolean;
 }
 
-export const DrivingInfoContext = createContext<DrivingInfoContextProps | undefined>(undefined);
+export const DriverInfoContext = createContext<DriverInfoContextProps | undefined>(undefined);

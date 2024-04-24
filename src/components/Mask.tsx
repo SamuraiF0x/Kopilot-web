@@ -1,14 +1,19 @@
 import useAxis from "../hooks/useAxis";
-import useDrivingInfo from "../hooks/useDrivingInfo";
+import useDriverInfo from "../hooks/useDriverInfo";
 import { useKeypoints } from "../hooks/useKeypoints";
 import useMask from "../hooks/useMask";
+import { useSettings } from "../hooks/useSettings";
 import { inputResolution } from "../utils/constants";
 
 export default function Mask() {
 	const canvasRef = useMask();
-	const { headPose } = useDrivingInfo();
+	const { headPose } = useDriverInfo();
 	const { keypoints } = useKeypoints();
 	useAxis(canvasRef.current, keypoints, headPose.projectedPoints);
+
+	const { stickMask } = useSettings();
+
+	// ! FIX menu button when canvasRef on mask
 
 	return (
 		<canvas
@@ -21,7 +26,7 @@ export default function Mask() {
 				width: "100%",
 				height: "100%",
 				objectFit: "cover",
-				transform: "scale(2.5) rotateY(180deg)",
+				transform: `${stickMask ? "scale(1)" : "scale(2.5)"} rotateY(180deg)`,
 			}}
 		/>
 	);

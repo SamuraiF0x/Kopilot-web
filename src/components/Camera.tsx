@@ -1,16 +1,16 @@
 import { useRef } from "react";
 import Webcam from "react-webcam";
 import { tokens } from "../../tamagui.config";
+import { useCamera } from "../hooks/useCamera";
 import { useKeypoints } from "../hooks/useKeypoints";
 import useMask from "../hooks/useMask";
+import { useSettings } from "../hooks/useSettings";
 import { inputResolution, videoConstraints } from "../utils/constants";
 import runDetector from "../utils/runDetector";
 
-interface CameraProps {
-	setLoaded: (loaded: boolean) => void;
-}
+export default function Camera() {
+	const { setLoaded } = useCamera();
 
-export default function Camera({ setLoaded }: CameraProps) {
 	const { setKeypoints } = useKeypoints();
 
 	const videoRef = useRef<(EventTarget & HTMLVideoElement) | null>(null);
@@ -28,13 +28,15 @@ export default function Camera({ setLoaded }: CameraProps) {
 		setLoaded(true);
 	};
 
+	const { showCameraFeed } = useSettings();
+
 	return (
 		<Webcam
 			width={inputResolution.width}
 			height={inputResolution.height}
 			style={{
 				objectFit: "cover",
-				visibility: "hidden",
+				opacity: showCameraFeed ? 1 : 0,
 				width: "100%",
 				height: "100%",
 				borderTopLeftRadius: tokens.radius[8].val,

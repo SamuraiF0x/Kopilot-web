@@ -3,13 +3,13 @@ import useGazeScore from "../hooks/useGazeScore";
 import useHeadPose from "../hooks/useHeadPose";
 import useScoreOverTime from "../hooks/useScoreOverTime";
 import useTresholdCountdown from "../hooks/useTresholdCountdown";
-import { DrivingInfoContext } from "./DrivingInfoContext";
+import { DriverInfoContext } from "./DrivingInfoContext";
 
-interface DrivingInfoProviderProps {
+interface DriverInfoProviderProps {
 	children: React.ReactNode;
 }
 
-export default function DrivingInfoProvider({ children }: DrivingInfoProviderProps) {
+export default function DriverInfoProvider({ children }: DriverInfoProviderProps) {
 	const EAR = useEAR();
 	const isAwake = useTresholdCountdown(EAR, 0.4);
 	const isTired = useScoreOverTime(EAR, 0.45);
@@ -29,7 +29,7 @@ export default function DrivingInfoProvider({ children }: DrivingInfoProviderPro
 	const isHeadDistracted = isHeadRollDistracted || isHeadTiltDistracted || isHeadYawDistracted;
 
 	return (
-		<DrivingInfoContext.Provider
+		<DriverInfoContext.Provider
 			value={{
 				EAR,
 				isAwake,
@@ -48,6 +48,6 @@ export default function DrivingInfoProvider({ children }: DrivingInfoProviderPro
 				isHeadDistracted,
 			}}>
 			{children}
-		</DrivingInfoContext.Provider>
+		</DriverInfoContext.Provider>
 	);
 }
