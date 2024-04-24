@@ -13,8 +13,6 @@ export default function Mask() {
 
 	const { stickMask } = useSettings();
 
-	// ! FIX menu button when canvasRef on mask
-
 	return (
 		<canvas
 			ref={canvasRef}

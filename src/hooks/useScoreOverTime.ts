@@ -24,7 +24,7 @@ export default function useScoreOverTime(
 	const scoreRef = useRef(score);
 
 	useEffect(() => {
-		scoreRef.current = (score); // update the ref with the latest value of score
+		scoreRef.current = score; // update the ref with the latest value of score
 	}, [score]);
 
 	useEffect(() => {
