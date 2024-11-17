@@ -1,7 +1,6 @@
 import { createContext } from "react";
 import { DriverState } from "../utils/constants";
 
-// Define the shape of your context
 interface DriverInfoContextProps {
 	EAR: number;
 	isEARFocused: boolean;
