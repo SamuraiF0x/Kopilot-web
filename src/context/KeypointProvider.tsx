@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Keypoint } from "@tensorflow-models/face-landmarks-detection";
+import type { Keypoint } from "@tensorflow-models/face-landmarks-detection";
 import { KeypointContext } from "./KeypointContext";
 
 interface KeypointProviderProps {

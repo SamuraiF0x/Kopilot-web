@@ -39,15 +39,21 @@ export default function DriverInfoProvider({ children }: DriverInfoProviderProps
 			!isHeadDistracted
 		) {
 			return DriverState.Focused;
-		} else if (isEARDistracted || isHeadDistracted) {
-			return DriverState.Tired;
-		} else if (!isEARFocused) {
-			return DriverState.Asleep;
-		} else if (!isGazeScoreFocused || isGazeScoreDistracted) {
-			return DriverState.LookingAway;
-		} else {
-			return DriverState.Distracted;
 		}
+
+		if (isEARDistracted || isHeadDistracted) {
+			return DriverState.Tired;
+		}
+
+		if (!isEARFocused) {
+			return DriverState.Asleep;
+		}
+
+		if (!isGazeScoreFocused || isGazeScoreDistracted) {
+			return DriverState.LookingAway;
+		}
+
+		return DriverState.Distracted;
 	})();
 
 	const driverSubStates = [

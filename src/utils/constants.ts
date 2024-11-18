@@ -48,7 +48,6 @@ export enum GazeScoreMessages {
 	Focused = "Focused",
 }
 
-// Assuming the messages for "Head pose" are the same as "Gaze score"
 export enum HeadPoseMessages {
 	EyesOnTheRoad = "Eyes on the road!",
 	Distracted = "Distracted",

@@ -1,5 +1,5 @@
-import cv, { MatExpr } from "@techstark/opencv-js";
-import { Keypoint } from "@tensorflow-models/face-landmarks-detection";
+import cv, { type MatExpr } from "@techstark/opencv-js";
+import type { Keypoint } from "@tensorflow-models/face-landmarks-detection";
 import { keypointIndex } from "./constants";
 
 // https://codepen.io/Susanne-Thierfelder/pen/KKegjvm
@@ -18,9 +18,9 @@ function rotationMatrixToEulerAngles(rotationMatrixData: MatExpr): number[] {
 	);
 	const singular = sy < 1e-6;
 
-	let x = 0,
-		y = 0,
-		z = 0;
+	let x = 0;
+	let y = 0;
+	let z = 0;
 
 	if (!singular) {
 		x = Math.atan2(rotationMatrixData.data64F[7], rotationMatrixData.data64F[8]);
@@ -36,9 +36,9 @@ function rotationMatrixToEulerAngles(rotationMatrixData: MatExpr): number[] {
 }
 
 export default function calculateHeadPose(keypoints: Keypoint[], canvas: HTMLCanvasElement) {
-	let roll = 0,
-		tilt = 0,
-		yaw = 0;
+	let roll = 0;
+	let tilt = 0;
+	let yaw = 0;
 
 	let projectedPoints: number[] = [];
 
