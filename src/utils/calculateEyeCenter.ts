@@ -1,4 +1,4 @@
-import { Keypoint } from "@tensorflow-models/face-landmarks-detection";
+import type { Keypoint } from "@tensorflow-models/face-landmarks-detection";
 
 interface Point {
 	x: number;
@@ -12,7 +12,7 @@ export default function calculateEyeCenter(keypoints: Keypoint[]): Point {
 
 	let eyeCenter = { x: 0, y: 0 };
 
-	if (keypoints.length > 0) {
+	if (count > 0) {
 		for (let i = 0; i < count; i++) {
 			sumX += keypoints[i]?.x;
 			sumY += keypoints[i]?.y;

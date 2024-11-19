@@ -1,16 +1,11 @@
 import cv, { type MatExpr } from "@techstark/opencv-js";
 import type { Keypoint } from "@tensorflow-models/face-landmarks-detection";
-import { keypointIndex } from "./constants";
+import { inputResolution, keypointIndex } from "./constants";
 
 // https://codepen.io/Susanne-Thierfelder/pen/KKegjvm
 // https://medium.com/@susanne.thierfelder/head-pose-estimation-with-mediapipe-and-opencv-in-javascript-c87980df3acb
 
-const inputResolution = {
-	width: 1920,
-	height: 1080,
-};
-
-// Convert the rotation vector to Euler angles (roll, pitch, yaw) if needed
+// Convert the rotation vector to Euler angles (roll, pitch, yaw)
 function rotationMatrixToEulerAngles(rotationMatrixData: MatExpr): number[] {
 	const sy = Math.sqrt(
 		rotationMatrixData.data64F[0] * rotationMatrixData.data64F[0] +
