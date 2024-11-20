@@ -7,10 +7,14 @@ export default function getDriverStateColor(driverState: DriverState): string {
 			color = "$success";
 			break;
 		case DriverState.Tired:
+			color = "$warning";
+			break;
 		case DriverState.LookingAway:
 			color = "$warning";
 			break;
 		case DriverState.Asleep:
+			color = "$red";
+			break;
 		case DriverState.Distracted:
 			color = "$red";
 			break;
