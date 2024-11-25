@@ -16,8 +16,8 @@ export default function DriverInfoProvider({ children }: DriverInfoProviderProps
 	const isEARDistracted = useScoreOverTime(EAR, 0.45);
 
 	const gazeScore = useGazeScore();
-	const isGazeScoreFocused = useTresholdCountdown(gazeScore, 0.35);
-	const isGazeScoreDistracted = useScoreOverTime(gazeScore, 0.35);
+	const isGazeScoreFocused = useTresholdCountdown(gazeScore, 0.55);
+	const isGazeScoreDistracted = useScoreOverTime(gazeScore, 0.55);
 
 	const headPose = useHeadPose();
 	const isHeadRollFocused = useTresholdCountdown(headPose.roll, 30, true);
