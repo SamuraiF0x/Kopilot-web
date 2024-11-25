@@ -14,7 +14,7 @@ export default function useScoreOverTime(
 	scoreThreshold: number,
 	bothSides = false,
 	durationTreshold = 0.2,
-	duration = 7500, // TODO change to 60000 (1 minute)
+	duration = 60000, // TODO change to 60000 (1 minute)
 ): boolean {
 	const [attention, setAttention] = useState(false);
 	const timeCount = useRef(0);
